@@ -72,8 +72,7 @@ class BasicAuth(Auth):
 
         try:
             users = User.search({'email': user_email})
-        # print(users)
-        except Exception:# if not users:
+        except Exception:
             return None
 
         for user in users:

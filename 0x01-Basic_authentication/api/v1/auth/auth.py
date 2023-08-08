@@ -23,12 +23,6 @@ class Auth:
             match = re.match(ex_path + "([*]?|/?)", path)
             if match:
                 return False
-        # if not path.endswith('/'):
-        #     path += '/'
-
-        # if path not in excluded_paths:
-        #     return True
-
         return True
 
     def authorization_header(self, request=None) -> str:
