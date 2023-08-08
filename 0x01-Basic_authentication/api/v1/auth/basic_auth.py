@@ -53,7 +53,8 @@ class BasicAuth(Auth):
                 not isinstance(decoded_base64_authorization_header, str)):
             return (None, None)
 
-        user_data = tuple(decoded_base64_authorization_header.split(":"))
+        user_data = tuple(decoded_base64_authorization_header.split(":", 1))
+
         if len(user_data) != 2:
             return (None, None)
 
@@ -69,14 +70,17 @@ class BasicAuth(Auth):
         if not user_pwd or not isinstance(user_pwd, str):
             return None
 
-        user = User.search({'email': user_email})
-        if not user:
+        try:
+            users = User.search({'email': user_email})
+        # print(users)
+        except Exception:# if not users:
             return None
 
-        if not user[0].is_valid_password(user_pwd):
-            return None
+        for user in users:
+            if user.is_valid_password(user_pwd):
+                return user
 
-        return user[0]
+        return None
 
     def current_user(self, request=None) -> TypeVar('User'):
         """

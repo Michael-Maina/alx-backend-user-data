@@ -3,6 +3,7 @@
 API Authentication Module
 """
 from flask import request
+import re
 from typing import List, TypeVar
 
 
@@ -18,13 +19,17 @@ class Auth:
         if (not path or not excluded_paths):
             return True
 
-        if not path.endswith('/'):
-            path += '/'
+        for ex_path in excluded_paths:
+            match = re.match(ex_path + "([*]?|/?)", path)
+            if match:
+                return False
+        # if not path.endswith('/'):
+        #     path += '/'
 
-        if path not in excluded_paths:
-            return True
+        # if path not in excluded_paths:
+        #     return True
 
-        return False
+        return True
 
     def authorization_header(self, request=None) -> str:
         """
