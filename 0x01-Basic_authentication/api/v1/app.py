@@ -29,7 +29,6 @@ def request_filter() -> None:
     Validates if API request requires authentication
     """
     excluded_paths = [
-        '/api/v1/status/',
         '/api/v1/unauthorized/',
         '/api/v1/forbidden/',
         '/api/v1/stat*'
