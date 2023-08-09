@@ -19,7 +19,6 @@ class Auth:
         if (not path or not excluded_paths):
             return True
 
-        path = path + '/' if not path.endswith('/') else path
         for ex_path in excluded_paths:
             match = re.match(ex_path + "([*]?|(/)?)", path)
             if match:
