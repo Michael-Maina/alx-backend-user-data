@@ -27,7 +27,7 @@ class SessionExpAuth(SessionAuth):
         if not session_id:
             return None
 
-        super().user_id_by_session_id[session_id] = {
+        self.user_id_by_session_id[session_id] = {
             'user_id': user_id,
             'created_at': datetime.now()
         }
@@ -39,13 +39,14 @@ class SessionExpAuth(SessionAuth):
         Retrieves user_id for a given session_id, if the session hasn't expired
         """
         if (not session_id or
-                not super().user_id_by_session_id.get(session_id)):
+                not self.user_id_by_session_id.get(session_id)):
             return None
 
-        session_dict = super().user_id_by_session_id.get(session_id)
+        session_dict = self.user_id_by_session_id.get(session_id)
 
+        user_id = session_dict.get('user_id')
         if self.session_duration <= 0:
-            return session_dict.get('user_id')
+            return user_id
 
         if not session_dict.get('created_at'):
             return None
@@ -55,4 +56,4 @@ class SessionExpAuth(SessionAuth):
         if datetime.now() > (session_duration + created_at):
             return None
 
-        return session_dict.get('user_id')
+        return user_id
