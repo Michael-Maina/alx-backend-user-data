@@ -25,7 +25,6 @@ def login():
     if not users:
         return jsonify({"error": "no user found for this email"}), 404
 
-    # print(request.current_user)
     for user in users:
         if user.is_valid_password(user_pwd):
             from api.v1.app import auth
