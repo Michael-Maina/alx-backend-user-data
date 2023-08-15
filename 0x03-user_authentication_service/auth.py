@@ -17,6 +17,7 @@ def _hash_password(password: str) -> bytes:
     hashed_pwd = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     return hashed_pwd
 
+
 def _generate_uuid() -> str:
     """
     Returns a UUID string
@@ -34,12 +35,12 @@ class Auth:
     def register_user(self, email: str, password: str) -> User:
         """
         Registers a user in the database if they don't exist and
-        returns the newly created User        
+        returns the newly created User
         """
         try:
             user = self._db.find_user_by(email=email)
             raise ValueError(f"User {email} already exists")
-            
+
         except NoResultFound:
             hashed_pwd = _hash_password(password)
             user = self._db.add_user(email, hashed_pwd)
@@ -52,7 +53,8 @@ class Auth:
         try:
             user = self._db.find_user_by(email=email)
             if user:
-                if bcrypt.checkpw(password.encode('utf-8'), user.hashed_password):
+                if bcrypt.checkpw(password.encode('utf-8'),
+                                  user.hashed_password):
                     return True
             return False
         except Exception:
